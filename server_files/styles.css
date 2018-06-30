@@ -1,0 +1,165 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+@-ms-viewport{
+  width: device-width;
+}
+
+html {
+	overflow-y: scroll;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.container {
+	max-width: 830px;
+	box-shadow: 4px 4px 40px rgba(124, 122, 133, 0.19);
+	background-color: #ffffff;
+	margin: 0 auto;
+	margin-top: 10px;
+	padding-bottom: 3em;
+}
+
+.header {
+	padding: 1.5rem 3rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: #00b9ff;
+	color: #ffffff;
+	font-family: 'Merriweather', serif;
+	font-weight: 700;
+	font-size: 1.5em;
+}
+
+.header-border {
+	background-color: #066cc7;
+	width: 100%;
+	height: 0.25em;
+}
+
+.description {
+	padding: 3em;
+	color: rgba(0, 0, 0, 0.8);
+	font-weight: 300;
+	line-height: 2em;
+}
+
+.search {
+	padding: 0 3em;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.txt-medicine {
+	width: 456px;
+	height: 3em;
+	padding-left: 1em;
+	font-size: 1.25em;
+	font-weight: 400;
+	border: 1px solid #dcdcdc;
+	outline-style: none;
+	box-sizing: border-box;
+}
+
+.txt-medicine:focus {
+	border: 1px solid #00b9ff;
+}
+
+.btn-search {
+	border: none;
+	color: #fff;
+	height: 3em;
+	padding: 0 2rem;
+	letter-spacing: 4px;
+	font-weight: 700;
+	font-size: 1.25em;
+	text-transform: uppercase;
+	background-color: #066cc7;
+}
+
+.btn-search:hover {
+	cursor: pointer;
+	background-color: #074cb5;
+}
+
+.answer {
+	margin: 3rem 3rem 0 3rem;
+	background-color: #e9f7ff;
+	padding: 1.5rem;
+	font-size: 1.5em;
+	text-align: center;
+	line-height: 1.5;
+	color: rgba(0, 0, 0, 0.8);
+}
+
+.medicine-name {
+	font-weight: 700;
+	color: #066cc7;
+}
+
+@media only screen and (max-width: 768px) {
+	body {
+		font-size: 12px;
+	}
+
+	.txt-medicine {
+		width: 100%
+	}
+
+	.container {
+		max-width: 830px;
+		box-shadow: none;
+		background-color: #ffffff;
+		margin-top: 0;
+		padding-bottom: 3em;
+	}
+
+	.search {
+		flex-wrap: wrap;
+	}
+
+	.btn-search {
+		margin-top: 1em;
+		width: 100%;
+	}
+
+	.pills {
+		display: none;
+	}
+
+	.answer {
+		margin: 36px 36px 0 36px;
+	}
+
+}
+
+.hidden {
+    display: none;
+}
