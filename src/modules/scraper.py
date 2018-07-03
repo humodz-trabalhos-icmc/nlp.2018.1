@@ -59,7 +59,7 @@ def get_data_from_page(html):
         }
 
 
-def scrape_all_drugs(filename='data/report.csv', per_page=100, start=1):
+def scrape_all_drugs(filename='data/bulas.csv', per_page=100, start=1):
     try:
         start_time = time()
         with open(filename, 'a') as f:
@@ -67,10 +67,11 @@ def scrape_all_drugs(filename='data/report.csv', per_page=100, start=1):
                 html = get_result_page(index=i, results=per_page)
 
                 for entry in get_data_from_page(html):
-                    url = PDF_DOWNLOAD_URL.format(entry['arg1'], entry['arg2'])
-                    line = f'{i},"{entry.name}",{entry.arg1},{entry.arg2},{url}'
-                    print(line, file=f)
-                    f.flush()
+                    if entry['arg1'] != '' and entry['arg2'] != '':
+                        url = PDF_DOWNLOAD_URL.format(entry['arg1'], entry['arg2'])
+                        line = f'{i},"{entry.name}",{entry.arg1},{entry.arg2},{url}'
+                        print(line, file=f)
+                        f.flush()
 
                 page = str(i).ljust(1)
                 elapsed = time() - start_time
@@ -79,7 +80,7 @@ def scrape_all_drugs(filename='data/report.csv', per_page=100, start=1):
         pass
 
 
-def filter_csv(in_file='report.csv', out_file='filtered.csv'):
+def filter_csv(in_file='data/bulas.csv', out_file='data/bulas.csv'):
     filtered = dict()
 
     with open(in_file) as fin:
@@ -104,7 +105,7 @@ def csv_random(in_file='data/bulas.csv', samples=200):
     return chosen
 
 
-def download_pdf(arg1, arg2, where):
+def download_pdf(arg1, arg2, where='data/pdf'):
     url_format = PDF_DOWNLOAD_URL
     url = url_format.format(arg1, arg2)
 
@@ -112,7 +113,7 @@ def download_pdf(arg1, arg2, where):
     os.system(f"wget '{url}' -P {where}")
 
 
-def wget_url_list(urls_txt, where):
+def wget_url_list(urls_txt, where='data/pdf'):
     os.system(f'wget -i {urls_txt} -P {where} --no-clobber')
     rename_documents(where)
 
@@ -129,7 +130,7 @@ def rename_documents(where):
         os.rename(f'{where}/{fin}', change_filename(fin))
 
 
-def pdf_to_txt(from_dir='data/pdf', to_dir='data/txt'):
+def pdf_to_txt(from_dir='data/pdf', to_dir='data/txt', xpdf_path='.'):
     in_files = os.listdir(from_dir)
 
     os.makedirs(to_dir, exist_ok=True)
@@ -139,7 +140,7 @@ def pdf_to_txt(from_dir='data/pdf', to_dir='data/txt'):
         fin = f'{from_dir}/{fin}'
         fout = f'{to_dir}/{fname}.txt'
 
-        os.system(f"pdftotext '{fin}' '{fout}'")
+        os.system(f"{xpdf_path}/pdftotext '{fin}' '{fout}'")
 
 
 def filter_section(from_dir='data/txt', to_dir='data/filtered'):

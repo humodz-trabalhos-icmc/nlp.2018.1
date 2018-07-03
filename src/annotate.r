@@ -1,6 +1,8 @@
-require('udpipe')
+# annotate.r INPUT_DIR OUTPUT_DIR
+# reads text files from INPUT_DIR and writes annotated udpipe tables to OUTPUT_DIR
 
-'%not in%' <- function(x,y) { !('%in%'(x,y)) }
+library(udpipe)
+
 
 preprocess <- function(d) {
     d <- gsub(":", " ", d)
@@ -18,37 +20,31 @@ preprocess <- function(d) {
 }
 
 
-annotate.file <- function(fin, fout, model) {
-    text = readLines(fin, encoding='utf-8')
-
-    if(length(text) == 0) {
-        cat('BLANK FILE:', fin, '\n')
-        return()
-    }
-
+annotate <- function(text, model) {
     text = preprocess(text)
-
     annotated = udpipe_annotate(model, x=text)
     table = as.data.frame(annotated)
     table$sentence = NULL
-
-    write.table(table, file=fout)
+    return table
 }
 
 
-annotate.dir <- function(from_dir, to_dir, model) {
-    dir.create(to_dir, showWarnings=FALSE)
+annotate.dir <- function(from_dir, to_dir, model, print.blank.files=TRUE) {
+    dir.create(to_dir, showWarnings=FALSE, recursive=TRUE)
 
     fnames = list.files(from_dir)
-    already.done = list.files(to_dir)
 
     for(fname in fnames) {
         no_extension = tools::file_path_sans_ext(fname)
+        fin = paste0(from_dir, '/', fname)
+        fout = paste0(to_dir, '/', no_extension, '.csv')
 
-        if(paste0(no_extension, '.csv') %not in% already.done) {
-            fin = paste0(from_dir, '/', fname)
-            fout = paste0(to_dir, '/', no_extension, '.csv')
-            annotate.file(fin, fout, model)
+        text = readLines(fin, encoding='utf-8')
+        if(length(text) != 0) {
+            table = annotate(text, model)
+            write.table(table, file=fout)
+        } else if(print.blank.files) {
+            cat(fin, sep='\n')
         }
     }
 }
@@ -72,9 +68,8 @@ main <- function(args) {
     if(length(args) != 2) {
         cat('Usage:\n')
         cat('    annotate.r INPUT_DIR OUTPUT_DIR\n')
-        return ()
+        return()
     }
-
 
     model = load.model(path)
     annotate.dir(from_dir=args[1], to_dir=args[2], model)
