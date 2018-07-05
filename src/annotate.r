@@ -64,7 +64,7 @@ load.model <- function(path) {
 }
 
 
-main <- function(args) {
+annotate.r.main <- function(args) {
     if(length(args) != 2) {
         cat('Usage:\n')
         cat('    annotate.r INPUT_DIR OUTPUT_DIR\n')
@@ -76,4 +76,4 @@ main <- function(args) {
 }
 
 
-main(commandArgs(trailingOnly=TRUE))
+# main(commandArgs(trailingOnly=TRUE))

@@ -1,6 +1,7 @@
 # process.r INPUT_DIR OUTPUT_DIR
 # Reads udpipe annotated tables from INPUT_DIR and writes processed text to OUTPUT_DIR
 
+
 keywords = c(
         "indicado", "indicada", "recomendado", "recomendada",
         "utilizado", "utilizada", "destinado", "destinada")
@@ -80,7 +81,7 @@ process.dir <- function(from_dir, to_dir) {
 }
 
 
-main <- function(args) {
+process.r.main <- function(args) {
     if(length(args) != 2) {
         cat('Usage:\n')
         cat('    process.r INPUT_DIR OUTPUT_DIR\n')
@@ -91,4 +92,7 @@ main <- function(args) {
 }
 
 
-main(commandArgs(trailingOnly=TRUE))
+annotate.r.main(c('data/filtered', 'data/annotated'))
+process.r.main(c('data/annotated', 'data/final'))
+
+# main(commandArgs(trailingOnly=TRUE))
