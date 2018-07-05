@@ -7,7 +7,6 @@ keywords = c(
 
 
 # Converts IDs of the form "A-B" to A
-# remove.expanded.contractions should be called BEFORE this function
 fix.token.id <- function(token_id) {
     as.str = as.character(token_id)
     str.list = strsplit(as.str, '-')
@@ -20,31 +19,43 @@ fix.token.id <- function(token_id) {
 #   sentence = c('comi', 'no', 'em', 'o', 'bar', 'do', 'de', 'o', 'zé')
 #   token.ids = c('1', '2-3', '2', '3', '4', '5-6', '5', '6', '7')
 #   result = remove.expanded.contractions(sentence, token.ids)
-remove.expanded.contractions <- function(sentence, ids) {
-    contraction.ids = ids[grep('-', ids, fixed=TRUE)]
-    expanded.ids = unlist(strsplit(contraction.ids, '-', fixed=TRUE))
-    unwanted.indices = match(expanded.ids, ids)
-    filtered.sentence = sentence[-unwanted.indices]
-    return(filtered.sentence)
+# remove.expanded.contractions <- function(words, ids) {
+#     contraction.ids = as.character(ids[grep('-', ids, fixed=TRUE)])
+#     expanded.ids = unlist(strsplit(contraction.ids, '-', fixed=TRUE))
+#     unwanted.indices = match(expanded.ids, ids)
+#     return(words[-unwanted.indices])
+# }
+
+remove.expanded.contractions <- function(text) {
+    unwanted = c(
+        'de a ', 'de o ', 'a a ', 'em a ', 'em o ', 'de as ',
+        'de os ', 'a as ', 'em as ', 'em os ')
+
+    for(str in unwanted) {
+        text = gsub(str, '', text)
+    }
+
+    return (text)
 }
 
 
 process.annotated.table <- function(udpipe.table) {
     bula = udpipe.table
-    bula$token_id = sapply(bula$token_id, fix.token.id)
+    token_id = sapply(bula$token_id, fix.token.id)
 
-    select = bula[which(bula$token %in% keywords)[1], ]
-    id_doc = select$doc_id
-    id_frase = select$sentence_id
-    id_part = select$token_id
+    condition = which(bula$token %in% keywords)[1]
+    select = bula[condition,]
+    select_token_id = token_id[condition]
 
-    wanted.words = (bula$doc_id == id_doc &
-                    bula$sentence_id == id_frase &
-                    bula$token_id > select$token_id)
+    wanted.words = (bula$doc_id == select$doc_id &
+                    bula$sentence_id == select$sentence_id &
+                    token_id > select_token_id)
 
+    ids = bula[wanted.words, "token_id"]
     words = bula[wanted.words, "token"]
-
+    # words = remove.expanded.contractions(words, ids)
     para.que = paste(words, collapse=' ')
+    para.que = remove.expanded.contractions(para.que)
     return (para.que)
 }
 

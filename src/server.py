@@ -2,7 +2,7 @@ import json
 import flask
 import numpy as np
 
-import server_utils as utils
+import modules.server_utils as utils
 
 
 drug_names, doc_dict = utils.open_all_documents()
@@ -16,7 +16,7 @@ def index():
 
 @app.route('/server_files/<path:path>')
 def send_public_file(path):
-    return flask.send_from_directory('../public', path)
+    return flask.send_from_directory('../server_files', path)
 
 
 @app.route('/search')

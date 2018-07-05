@@ -2,7 +2,7 @@ import csv
 import itertools
 import os
 import re
-import random
+import subprocess as sp
 
 from urllib import request, parse
 from time import time
@@ -97,14 +97,6 @@ def filter_csv(in_file='data/bulas.csv', out_file='data/bulas.csv'):
                 print(fmt(*filtered[key]), file=fout)
 
 
-def csv_random(in_file='data/bulas.csv', samples=200):
-    with open(in_file, encoding='utf-8') as fin:
-        reader = csv.reader(fin)
-        urls = [row[4] for row in reader]
-        chosen = random.sample(urls, samples)
-    return chosen
-
-
 def download_pdf(arg1, arg2, where='data/pdf'):
     url_format = PDF_DOWNLOAD_URL
     url = url_format.format(arg1, arg2)
@@ -113,8 +105,14 @@ def download_pdf(arg1, arg2, where='data/pdf'):
     os.system(f"wget '{url}' -P {where}")
 
 
-def wget_url_list(urls_txt, where='data/pdf'):
-    os.system(f'wget -i {urls_txt} -P {where} --no-clobber')
+def wget_url_list(urls, where='data/pdf'):
+    p = sp.Popen('wget -i - --no-clobber'.split() + [where], stdin=sp.PIPE)
+
+    for url in urls:
+        p.stdin.write(bytes(url, encoding='utf-8'))
+        p.stdin.write(b'\n')
+    p.stdin.close()
+
     rename_documents(where)
 
 
