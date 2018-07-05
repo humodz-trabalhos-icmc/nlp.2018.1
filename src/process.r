@@ -94,5 +94,5 @@ process.r.main <- function(args) {
 
 
 source('src/annotate.r')
-# annotate.r.main(c('data/filtered', 'data/annotated'))
+annotate.r.main(c('data/filtered', 'data/annotated'))
 process.r.main(c('data/annotated', 'data/final'))
