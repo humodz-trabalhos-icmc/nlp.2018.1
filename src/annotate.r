@@ -25,7 +25,7 @@ annotate <- function(text, model) {
     annotated = udpipe_annotate(model, x=text)
     table = as.data.frame(annotated)
     table$sentence = NULL
-    return table
+    return(table)
 }
 
 
@@ -74,6 +74,3 @@ annotate.r.main <- function(args) {
     model = load.model(path)
     annotate.dir(from_dir=args[1], to_dir=args[2], model)
 }
-
-
-annotate.r.main(c('data/filtered', 'data/annotated'))

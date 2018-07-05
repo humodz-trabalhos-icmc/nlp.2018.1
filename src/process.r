@@ -29,11 +29,11 @@ fix.token.id <- function(token_id) {
 
 remove.expanded.contractions <- function(text) {
     unwanted = c(
-        'de a ', 'de o ', 'a a ', 'em a ', 'em o ', 'de as ',
-        'de os ', 'a as ', 'em as ', 'em os ')
+        ' de a ', ' de o ', ' a a ', ' em a ', ' em o ', ' de as ',
+        ' de os ', ' a as ', ' em as ', ' em os ')
 
     for(str in unwanted) {
-        text = gsub(str, '', text)
+        text = gsub(str, '  ', text)
     }
 
     return (text)
@@ -92,4 +92,6 @@ process.r.main <- function(args) {
 }
 
 
+source('src/annotate.r')
+# annotate.r.main(c('data/filtered', 'data/annotated'))
 process.r.main(c('data/annotated', 'data/final'))
