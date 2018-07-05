@@ -92,7 +92,4 @@ process.r.main <- function(args) {
 }
 
 
-annotate.r.main(c('data/filtered', 'data/annotated'))
 process.r.main(c('data/annotated', 'data/final'))
-
-# main(commandArgs(trailingOnly=TRUE))

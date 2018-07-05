@@ -76,4 +76,4 @@ annotate.r.main <- function(args) {
 }
 
 
-# main(commandArgs(trailingOnly=TRUE))
+annotate.r.main(c('data/filtered', 'data/annotated'))
