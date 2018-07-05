@@ -29,8 +29,9 @@ fix.token.id <- function(token_id) {
 
 remove.expanded.contractions <- function(text) {
     unwanted = c(
-        ' de a ', ' de o ', ' a a ', ' em a ', ' em o ', ' de as ',
-        ' de os ', ' a as ', ' em as ', ' em os ')
+        ' de a ', ' de o ', ' de as ', ' de os ',
+        ' em a ', ' em o ', ' em as ', ' em os ',
+        ' a a ', ' a o ', ' a as ', ' a os ')
 
     for(str in unwanted) {
         text = gsub(str, '  ', text)
